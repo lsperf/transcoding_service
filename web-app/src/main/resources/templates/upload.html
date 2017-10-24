@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout/common">
+
+<section layout:fragment="content" th:remove="tag">
+
+	<div id="page-wrapper" style="min-height: 471px;">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Upload mp4 video</h1>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<!-- /.row -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+
+								<script>
+
+                                    function updateInfos(){
+                                        document.querySelector('#infos').innerHTML="";
+
+                                        for(i=0;myVideos.length > i;i++){
+                                            document.querySelector('#infos').innerHTML += myVideos[i].name+" duration: "+myVideos[i].duration;
+                                            if(myVideos[i].duration > 10){
+                                                alert("File duration is more than 10 min: "+myVideos[i].name+" duration: "+myVideos[i].duration);
+                                                $("#file").replaceWith($("#file").val('').clone(true));
+											}
+                                        }
+                                    }
+
+                                    var myVideos = [];
+                                    window.URL = window.URL || window.webkitURL;
+                                    function setFileInfo(files) {
+                                        myVideos.push(files[0]);
+                                        var video = document.createElement('video');
+                                        video.preload = 'metadata';
+                                        video.onloadedmetadata = function() {
+                                            window.URL.revokeObjectURL(this.src)
+                                            var duration = video.duration;
+                                            myVideos[myVideos.length-1].duration = duration;
+                                            updateInfos();
+                                        }
+                                        video.src = URL.createObjectURL(files[0]);;
+                                    }
+
+
+								</script>
+
+
+
+								<script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.17.min.js"></script>
+
+
+								<script type="text/javascript">
+
+                                    AWS.config.update({
+                                        accessKeyId : 'AKIAI37KZZ75PBYHVNGQ',
+                                        secretAccessKey : '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'
+                                    });
+                                    //AWS.config.region = 'AWS_REGION';
+
+								</script>
+
+
+								<script type="text/javascript">
+
+                                    $(document).ready(function () {
+
+                                        $("#fileUploadForm").submit(function() {
+
+                                            var bucket = new AWS.S3({params: {Bucket: 'lgtranscoding-input'}});
+                                            var fileChooser = document.getElementById('file');
+                                            var file = fileChooser.files[0];
+                                            if (file) {
+                                                video_id = randomString(9)+'_'+file.name;
+                                                //alert(fname);
+                                                var params = {Key: video_id, ContentType: file.type, Body: file};
+
+                                                bucket.upload(params).on('httpUploadProgress', function(evt) {
+
+                                                    //console.log("Uploaded :: " + parseInt((evt.loaded * 100) / evt.total)+'%');
+
+
+                                                    var elem = document.getElementById("myBar");
+
+                                                    var progress = (evt.loaded * 100) / evt.total;
+
+                                                    elem.style.width = parseInt(progress)+'%';
+
+                                                    if(progress >= 100){
+
+                                                        //alert("File uploaded successfully.");
+                                                        $('#upload_info').text("File uploaded successfully.");
+                                                        //location.reload();
+                                                        //window.location.replace("videos");
+                                                    }
+
+                                                }).send(function(err, data) {
+
+                                                });
+
+                                            }
+
+                                            return false;
+                                        });
+
+                                    });
+
+
+                                    function randomString(len) {
+                                        charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                        var randomString = '';
+                                        for (var i = 0; len > i; i++) {
+                                            var randomPoz = Math.floor(Math.random() * charSet.length);
+                                            randomString += charSet.substring(randomPoz,randomPoz+1);
+                                        }
+                                        return randomString;
+                                    }
+								</script>
+
+
+
+
+								<form id="fileUploadForm" method="post" enctype="multipart/form-data">
+									<input type="file" name="file" id="file" value="dataFile" required="" />
+									<input type="submit" name="submit" value="Upload" />
+								</form>
+								<style>
+
+									#myProgress {
+										position: relative;
+										width: 100%;
+										height: 30px;
+										background-color: grey;
+									}
+									#myBar {
+										position: absolute;
+										width: 1%;
+										height: 100%;
+										background-color: green;
+									}
+
+									.snapshot.preview {
+										float: right;
+										width: 110px;
+									}
+
+
+								</style>
+								<div id="myProgress">
+									<div id="myBar"></div>
+								</div>
+								<div id="infos"></div>
+								<div id="upload_info"></div>
+								<div id="transcoding_state"></div>
+								<div id="transcoding_duration"></div>
+								<div id="transcoding_hls_url"></div>
+								<div id="transcoding_resolution"></div>
+
+
+
+
+							</div>
+							<!-- /.col-lg-6 (nested) -->
+						</div>
+						<!-- /.row (nested) -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<!-- /.row -->
+	</div>
+
+</section>
+
+
+
+</html>

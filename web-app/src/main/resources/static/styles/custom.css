@@ -1,0 +1,42 @@
+.frmb li {
+	border: solid 1px #cccccc;
+}
+
+#jsonForm .option-value, #jsonForm .form-actions .btn-default, #jsonForm .frmb .prev-holder, #jsonForm .option-selected,
+#jsonForm .education-field .label-wrap,
+#jsonForm .birthdate-field .label-wrap,
+#jsonForm .gender-field .label-wrap,
+#jsonForm .city-field .label-wrap,
+#jsonForm .country-field .label-wrap,
+#jsonForm .employed-field .label-wrap,
+#jsonForm .degree_type-field .label-wrap,
+#jsonForm .firstName-field .label-wrap,
+#jsonForm .lastName-field .label-wrap,
+#jsonForm .spoken_languages-field .label-wrap {
+	display: none !important;
+}
+
+#jsonForm .option-label {
+	width: 90% !important;
+}
+
+#regForm .form-group {
+	/*vertical-align: top;*/
+	display: block;
+	/*margin-top: 15px;*/
+}
+
+
+#circleRed {
+	background: #f00;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+}
+
+#circleGreen {
+	background: #33cc33;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+}

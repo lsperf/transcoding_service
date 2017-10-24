@@ -1,0 +1,54 @@
+buildscript {
+    ext {
+        depManagementVersion = "1.0.3.RELEASE"
+		springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath ("io.spring.gradle:dependency-management-plugin:${depManagementVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    group 'nl.neurolympics'
+    version '1.0-SNAPSHOT'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    ext {
+        JUNIT_VERSION = '4.11'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+//            mavenBom 'io.spring.platform:platform-bom:2.0.8.RELEASE'
+        }
+    }
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile 'org.springframework.security:spring-security-core:4.2.3.RELEASE'
+        compile 'io.jsonwebtoken:jjwt:0.6.0'
+
+		/* Utilities */
+
+        testCompile "junit:junit:${JUNIT_VERSION}"
+    }
+}

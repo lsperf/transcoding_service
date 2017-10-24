@@ -1,0 +1,6 @@
+rootProject.name = "HLSEncoder"
+
+include "common"
+include "hls-transcoding-service"
+include "web-app"
+

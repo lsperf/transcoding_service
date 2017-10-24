@@ -1,0 +1,8 @@
+<section th:fragment="dialog" th:remove="tag">
+	<script>
+		$('#confirm-delete').on('show.bs.modal', function (e) {
+			var data = $(e.relatedTarget).data();
+			$('form', this).attr('action', data.href);
+		});
+	</script>
+</section>
