@@ -2,7 +2,7 @@ Transcoding to HLS service implemented using java Spring Boot and
 AWS services (EC2, S3, RDB, Elastic Transcoder, AWS Lambda, SNS, SQS)
 
 1. Enter point:
-http://ec2-34-215-102-121.us-west-2.compute.amazonaws.com
+http://ec2-34-214-31-137.us-west-2.compute.amazonaws.com
 
 login with test user:
 un: levon
